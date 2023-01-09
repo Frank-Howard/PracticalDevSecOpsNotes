@@ -1,1 +1,26 @@
+image: docker:latest
 
+services:
+  - docker:dind
+
+stages:
+  - build
+  - test
+  - release
+  - preprod
+  - integration
+  - prod
+
+docker:
+  stage: build
+  script:
+    - docker build -t django.nv .
+
+safety:
+  stage: test
+  script:
+    - docker run -it --rm -v $PWD:/opt pyupio/safety safety check --file=/opt/requirements.txt --json -o /opt/safety_report.json
+  artifacts:
+    path: safety_report.json
+    when: always
+    
