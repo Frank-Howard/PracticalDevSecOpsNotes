@@ -36,17 +36,25 @@ retirejs:
     when: always
   allow_failure: true
   
-trufflehog:
-    stage: test
-    script:
-      - docker run -it -v "$PWD:/pwd" ghcr.io/trufflesecurity/trufflehog:latest filesystem --directory="." --debug --json 
-    artifacts:
-      paths:
-        - trufflehog_report.json
-      when: always
-    allow_failure: true
+#trufflehog:
+#    stage: test
+#    script:
+#      - docker run -it -v "$PWD:/pwd" ghcr.io/trufflesecurity/trufflehog:latest filesystem --directory="." --debug --json 
+#    artifacts:
+#      paths:
+#        - trufflehog_report.json
+#      when: always
+#    allow_failure: true
 
-  
+bandit:
+  stage: test
+  script:
+    - docker run --rm $(pwd):/data cytopia/bandit -r /data -o bandit_output.json
+  artifacts:
+    paths:
+      - bandit_output.json
+    when: always
+  allow_failure: true
   
 
     
