@@ -21,6 +21,16 @@ safety:
   script:
     - docker run -it --rm -v $PWD:/opt pyupio/safety safety check --file=/opt/requirements.txt --json -o /opt/safety_report.json
   artifacts:
-    path: safety_report.json
+    paths: 
+      - safety_report.json
+    when: always
+    
+retirejs:
+  stage: test
+  script:
+    - docker run --rm -v $PWD:/app gruebel/retirejs:latest --outputformat json --outputpath retirejs_report.json
+  artifacts:
+    paths:
+      - retirejs_report.json
     when: always
     
