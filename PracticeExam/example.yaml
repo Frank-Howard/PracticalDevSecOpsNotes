@@ -36,7 +36,7 @@ retirejs:
     when: always
   allow_failure: true
   
-truffleHog:
+trufflehog:
     stage: test
     script:
       - docker run -it -v "$PWD:/pwd" ghcr.io/trufflesecurity/trufflehog:latest filesystem --directory="." --debug --json 
