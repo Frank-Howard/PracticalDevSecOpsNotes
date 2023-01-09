@@ -36,15 +36,15 @@ retirejs:
     when: always
   allow_failure: true
   
-#trufflehog:
-#    stage: test
-#    script:
-#      - docker run -it -v "$PWD:/pwd" ghcr.io/trufflesecurity/trufflehog:latest filesystem --directory="." --debug --json 
-#    artifacts:
-#      paths:
-#        - trufflehog_report.json
-#      when: always
-#    allow_failure: true
+trufflehog:
+    stage: test
+    script:
+      - docker run -v $(pwd):/src --rm hysnsec/trufflehog --repo_path /src file:///src --json
+    artifacts:
+      paths:
+        - trufflehog_report.json
+      when: always
+    allow_failure: true
 
 bandit:
   stage: test
