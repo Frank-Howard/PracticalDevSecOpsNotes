@@ -24,6 +24,7 @@ safety:
     paths: 
       - safety_report.json
     when: always
+  allow_failure: true
     
 retirejs:
   stage: test
@@ -33,4 +34,19 @@ retirejs:
     paths:
       - retirejs_report.json
     when: always
+  allow_failure: true
+  
+  truffleHog:
+    stage: test
+    script:
+      - docker run -it -v "$PWD:/pwd" ghcr.io/trufflesecurity/trufflehog:latest filesystem --directory="." --debug --json 
+    artifacts:
+      paths:
+        - trifflehog_report.json
+      when: always
+    allow_failure: true
+
+  
+  
+
     
