@@ -42,7 +42,7 @@ retirejs:
       - docker run -it -v "$PWD:/pwd" ghcr.io/trufflesecurity/trufflehog:latest filesystem --directory="." --debug --json 
     artifacts:
       paths:
-        - trifflehog_report.json
+        - trufflehog_report.json
       when: always
     allow_failure: true
 
