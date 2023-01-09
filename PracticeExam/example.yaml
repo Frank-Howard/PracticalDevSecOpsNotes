@@ -39,7 +39,7 @@ retirejs:
 trufflehog:
     stage: test
     script:
-      - docker run -v $(pwd):/src --rm hysnsec/trufflehog --repo_path /src file:///src --json
+      - docker run -v $(pwd):/src --rm hysnsec/trufflehog --repo_path /src file:///src --json | tee trufflehog_report.json
     artifacts:
       paths:
         - trufflehog_report.json
