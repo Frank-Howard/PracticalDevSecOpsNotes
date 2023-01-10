@@ -69,7 +69,7 @@ dependency-check:
       - reports/dependency-check-report.csv
     when: always
     expire_in: one week
-# ADD SNYK_TOKEN
+# ADD SNYK_TOKEN to variables in gitlab. IDK if they give you one or they might ask you to get a free one from snyk website
 snyk:
   stage: test
   image: node:latest
