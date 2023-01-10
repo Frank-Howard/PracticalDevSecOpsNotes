@@ -57,6 +57,18 @@ retirejs:
     paths: [retirejs-report.json]
     when: always
     expire_in: one week # Optional
+    
+dependency-check:
+  stage: test
+  image: gitlab/dind:latest
+  script:
+    - chmod +x ./run-depcheck.sh
+    - ./run-depcheck.sh
+  artifacts:
+    paths:
+      - reports/dependency-check-report.csv
+    when: always
+    expire_in: one week
 
 #SAST  
 trufflehog:
