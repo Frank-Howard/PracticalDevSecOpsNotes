@@ -33,7 +33,7 @@ test:
    - pip install -r requirements.txt
    - python manage.py test taskManager  
   
-## SCA
+## SCA -------------------------------------------------------------------------------------------------------------------
 safety:
   stage: test
   script:
@@ -69,8 +69,24 @@ dependency-check:
       - reports/dependency-check-report.csv
     when: always
     expire_in: one week
+# ADD SNYK_TOKEN
+snyk:
+  stage: test
+  image: node:latest
+  before_script:
+    - wget -O snyk https://github.com/snyk/snyk/releases/download/v1.566.0/snyk-linux
+    - chmod +x snyk
+    - mv snyk /usr/local/bin/
+  script:
+    - npm install
+    - snyk test --json > snyk-results.json
+  artifacts:
+    paths:
+    - snyk-results.json
+    expire_in: one week
+  allow_failure: true
 
-#SAST  
+# SAST -------------------------------------------------------------------------------------------------------------------  
 trufflehog:
   stage: build
   script:
@@ -91,7 +107,7 @@ sast:
     when: always
   allow_failure: true   #<--- allow the build to fail but don't mark it as such
   
-#DAST
+#DAST ------------------------------------------------------------------------------------------------------------------------------
 nikto:
   stage: integration
   script:
