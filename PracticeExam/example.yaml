@@ -31,8 +31,9 @@ test:
    - virtualenv env
    - source env/bin/activate
    - pip install -r requirements.txt
-   - python manage.py test taskManager
+   - python manage.py test taskManager  
   
+## SCA
 safety:
   stage: test
   script:
@@ -45,7 +46,7 @@ safety:
     when: always # What does this do?
   allow_failure: true
     
-retirejs_old:
+retirejs:
   stage: test
   image: node:alpine3.10
   script:
@@ -56,7 +57,8 @@ retirejs_old:
     paths: [retirejs-report.json]
     when: always
     expire_in: one week # Optional
-  
+
+#SAST  
 trufflehog:
     stage: test
     script:
@@ -77,6 +79,7 @@ bandit:
     when: always
   allow_failure: true
   
+#DAST
 nikto:
   stage: integration
   script:
