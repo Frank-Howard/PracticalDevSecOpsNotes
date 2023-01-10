@@ -80,15 +80,16 @@ trufflehog:
     when: always  # What is this for?
     expire_in: one week
 
-bandit:
-  stage: test
+sast:
+  stage: build
   script:
-    - docker run --rm $(pwd):/data cytopia/bandit -r /data -o bandit_output.json
+    - docker pull hysnsec/bandit  # Download bandit docker container
+    # Run docker container, please refer docker security course, if this doesn't make sense to you.
+    - docker run --user $(id -u):$(id -g) -v $(pwd):/src --rm hysnsec/bandit -r /src -f json -o /src/bandit-output.json
   artifacts:
-    paths:
-      - bandit_output.json
+    paths: [bandit-output.json]
     when: always
-  allow_failure: true
+  allow_failure: true   #<--- allow the build to fail but don't mark it as such
   
 #DAST
 nikto:
