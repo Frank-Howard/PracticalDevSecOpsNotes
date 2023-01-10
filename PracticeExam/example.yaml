@@ -47,13 +47,15 @@ test:
     
 retirejs:
   stage: test
+  image: node:alpine3.10
   script:
-    - docker run --rm -v $PWD:/app gruebel/retirejs:latest --outputformat json --outputpath retirejs_report.json
+    - npm install
+    - npm install -g retire
+    - retire --outputformat json --outputpath retirejs-report.json --severity high
   artifacts:
-    paths:
-      - retirejs_report.json
+    paths: [retirejs-report.json]
     when: always
-  allow_failure: true
+    expire_in: one week # Optional
   
 trufflehog:
     stage: test
