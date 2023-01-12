@@ -106,3 +106,5 @@ Execute playbook against an inventory
 ansible-galaxy role --help
 ansible-galaxy search terraform
 ansible-galaxy install secfigo.terraform
+
+ansible-galaxy install dev-sec.os-hardening
