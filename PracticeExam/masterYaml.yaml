@@ -162,7 +162,14 @@ sast:
     when: always
   allow_failure: true   #<--- allow the build to fail but don't mark it as such
   
-
+gosec:
+  stage: build
+  script:
+    - docker run --rm -v $(pwd):/src -w /src securego/gosec -fmt json -out gosec-output.json ./...
+  artifacts:
+    paths: [gosec-output.json]
+    when: always
+  allow_failure: true
   
 #DAST ------------------------------------------------------------------------------------------------------------------------------
 nikto:
