@@ -10,18 +10,18 @@ detect-secrets scan > secrets-output.json
 echo "q\n" | detect-secrets audit secrets-output.json
 
 #### Talisman
-curl --silent https://raw.githubusercontent.com/thoughtworks/talisman/master/global_install_scripts/install.bash > /tmp/install_talisman.bash && /bin/bash /tmp/install_talisman.bash pre-commit
-curl --silent https://raw.githubusercontent.com/thoughtworks/talisman/master/global_install_scripts/install.bash > /tmp/install_talisman.bash && /bin/bash /tmp/install_talisman.bash pre-push
+curl --silent https://raw.githubusercontent.com/thoughtworks/talisman/master/global_install_scripts/install.bash > /tmp/install_talisman.bash && /bin/bash /tmp/install_talisman.bash pre-commit \n
+curl --silent https://raw.githubusercontent.com/thoughtworks/talisman/master/global_install_scripts/install.bash > /tmp/install_talisman.bash && /bin/bash /tmp/install_talisman.bash pre-push\n
 source ~/.bashrc
 ^ Adds it to the bash environment so you can call talisman -h
-talisman --scan
+talisman --scan\n
 
 #### SemGrep
 pip3 install semgrep==0.108.0
-semgrep --help
-semgrep --lang python -e "os.system(...)" . --json | jq
-semgrep --lang python -e "DEBUG =True" --include settings.py .
-Scan all declarations of variables 
+semgrep --help\n
+semgrep --lang python -e "os.system(...)" . --json | jq\n
+semgrep --lang python -e "DEBUG =True" --include settings.py .\n
+Scan all declarations of variables \n
 semgrep --lang python -e '$X = $Y' .
-Scan all function calls that have request as an argument
-semgrep --lang python -e '$FUNC(request)' .
+Scan all function calls that have request as an argument\n
+semgrep --lang python -e '$FUNC(request)' .\n
