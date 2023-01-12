@@ -60,6 +60,26 @@ Capture key sigs to allow for automation using ssh commands
 `ansible-doc -l | grep shell`
 `ansible -i inventory.ini prod -m shell -a "uptime"`
 
+#### Example playbook
+```
+cat > playbook.yml <<EOL
+---
+- name: Example playbook to install firewalld
+  hosts: prod
+  remote_user: root
+  become: yes
+  gather_facts: no
+  vars:
+    state: present
 
+  tasks:
+  - name: ensure firewalld is at the latest version
+    apt:
+      name: firewalld
+
+EOL
+```
+Run playbook against inventory
+`ansible-playbook -i inventory.ini playbook.yml`
 
 
