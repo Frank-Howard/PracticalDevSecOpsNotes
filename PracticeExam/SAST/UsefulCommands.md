@@ -33,3 +33,51 @@ chmod +x hadolint
 ./hadolint --help 
 ./hadolint Dockerfile 
 cat -n Dockerfile This shows line numbers
+
+#### FindSecBugs
+wget https://github.com/WebGoat/WebGoat/releases/download/v8.1.0/webgoat-server-8.1.0.jar  
+apt update && apt install openjdk-8-jre -y  
+wget https://github.com/find-sec-bugs/find-sec-bugs/releases/download/version-1.9.0/findsecbugs-cli-1.9.0-fix2.zip && unzip findsecbugs-cli-1.9.0-fix2.zip -d /opt/  
+sed -i -e 's/\r$//' /opt/findsecbugs.sh  
+chmod +x /opt/findsecbugs.sh  
+export PATH=/opt/:$PATH  
+findsecbugs.sh -h  
+findsecbugs.sh -progress -html -output findsecbugs-report.html webgoat-server-8.1.0.jar 
+
+#### njsscan
+pip3 install njsscan==0.3.3  
+njsscan --help  
+njsscan --json -o output.json .  
+
+#### Pylint
+pip3 install pylint
+pylint --help  
+pylint taskManager/*.py  
+pylint taskManager/*.py -f json | tee output.json  
+cat > .pylintrc <<EOF
+[MASTER]
+disable=missing-module-docstring,import-error
+EOF  
+pylint taskManager/*.py  
+
+#### Brakeman
+apt update
+apt install ruby-full -y
+gem install brakeman -v 5.2.1
+brakeman -h
+brakeman -f json | tee result.json
+create brakeman.ignore file if you want to ignore some tools
+
+#### SonarQube
+export SONAR_VERSION="4.7.0.2747"  
+wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_VERSION}-linux.zip -O /opt/sonar-scanner.zip  
+unzip /opt/sonar-scanner.zip -d /opt/  
+chmod +x /opt/sonar-scanner-${SONAR_VERSION}-linux/bin/sonar-scanner  
+export PATH=/opt/sonar-scanner-${SONAR_VERSION}-linux/bin/:$PATH  
+export SONARQUBE_TOKEN=INSERT_YOUR_TOKEN_HERE  
+sonar-scanner -Dsonar.projectKey=Django -Dsonar.sources=. -Dsonar.host.url=https://sonarqube-xioqjd4c.lab.practical-devsecops.training -Dsonar.login=$SONARQUBE_TOKEN  
+
+
+
+
+
