@@ -1,6 +1,5 @@
 pip3 install ansible==6.4.0  
 
-
 ```
 cat > inventory.ini <<EOL
 
@@ -15,6 +14,7 @@ prod-xioqjd4c
 
 EOL
 ```
+#### ad hoc commands 
 
 ansible -i inventory.ini prod --list-hosts
 
@@ -39,7 +39,7 @@ ansible -i inventory.ini all -m ping
 ansible -i inventory.ini all -m shell -a "hostname"  
 ansible-doc -l | egrep "add_host|amazon.aws.aws"  
 ansible -i inventory.ini all -m copy -a "src=/root/notes dest=/root"  
-
+#### Hardening
 
 
 
