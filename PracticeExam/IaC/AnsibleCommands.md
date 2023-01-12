@@ -100,3 +100,7 @@ Install a role
 
 Execute playbook against an inventory
 `ansible-playbook -i /challenge/inventory.ini /challenge/playbook.yml`
+
+ansible-galaxy role --help
+ansible-galaxy search terraform
+ansible-galaxy install secfigo.terraform
