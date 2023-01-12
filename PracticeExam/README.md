@@ -7,6 +7,11 @@ Code Analysis:
 Bandit 
 
 Best Practices: 
+1. Tested the tools locally before embedding in the pipeline
+2. Ensured the scans finish within 10 minutes
+3. Ensured they each run in their own jobs
+4. We saved the output in a file
+5. We didn’t fail the builds
 
 Gospel: 
 1. Maintain cordial relationships with Developers/QA and Operation teams
