@@ -54,11 +54,13 @@ prod-xioqjd4c
 EOL
 ```
 Capture key sigs to allow for automation using ssh commands  
-`ssh-keyscan -t rsa prod-xioqjd4c devsecops-box-xioqjd4c >> ~/.ssh/known_hosts`
-`ansible -i inventory.ini prod -m apt -a "name=ntp state=present`
-`ansible -i inventory.ini all -m command -a "bash --version"`
-`ansible-doc -l | grep shell`
-`ansible -i inventory.ini prod -m shell -a "uptime"`
+```
+ssh-keyscan -t rsa prod-xioqjd4c devsecops-box-xioqjd4c >> ~/.ssh/known_hosts
+ansible -i inventory.ini prod -m apt -a "name=ntp state=present
+ansible -i inventory.ini all -m command -a "bash --version"
+ansible-doc -l | grep shell
+ansible -i inventory.ini prod -m shell -a "uptime"
+```
 
 #### Example playbook
 ```
