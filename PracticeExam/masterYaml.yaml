@@ -57,6 +57,16 @@ retirejs:
     paths: [retirejs-report.json]
     when: always
     expire_in: one week # Optional
+
+retirejs_docker:
+  stage: test
+  script:
+    - docker pull gruebel/retirejs
+    - docker run --rm -v $PWD:/app gruebel/retirejs:latest --outputformat json --outputpath /app/retirejs-report.json
+  artifacts:
+    paths: [retirejs-report.json]
+    when: always
+    expire_in: one week # Optional
     
 dependency-check:
   stage: test
@@ -69,6 +79,7 @@ dependency-check:
       - reports/dependency-check-report.csv
     when: always
     expire_in: one week
+    
 # ADD SNYK_TOKEN to variables in gitlab. IDK if they give you one or they might ask you to get a free one from snyk website
 snyk:
   stage: test
@@ -85,7 +96,50 @@ snyk:
     - snyk-results.json
     expire_in: one week
   allow_failure: true
+  
+# make sure this is running on webapp repo and not django. Otherwise no results
+npm_audit:
+  stage: test
+  script:
+    - npm audit --json | tee npm_results.json
+  artifacts:
+    paths: [npm_results.json]
+    when: always
+    expire_in: one week # Optional
+    
+auditjs:
+  image: docker:dind
+  stage: test
+  script:
+    - docker run --rm -v $(pwd):/src -w /src hysnsec/auditjs ossi -q -j | tee auditjs-output.json
+  artifacts:
+    paths: [auditjs-output.json]
+    when: always # What is this for?
+    expire_in: one week
+  allow_failure: true
 
+bundler-audit:
+  stage: test
+  script:
+    - docker run --rm -v $(pwd):/src -w /src hysnsec/bundler-audit ossi -q -j | tee bundler-audit-output.json
+  artifacts:
+    paths: [bundler-audit-output.json]
+    when: always # What is this for?
+    expire_in: one week
+  allow_failure: true
+  
+bundler-audit:
+  stage: test
+  script:
+    - docker run --rm -v $(pwd):/src -w /src hysnsec/bundler-audit ossi -q -j | tee bundler-audit-output.json
+  artifacts:
+    paths: [bundler-audit-output.json]
+    when: always # What is this for?
+    expire_in: one week
+  allow_failure: true
+  
+  docker run -v $PWD:/app -w /app ruby:2.6.6 /bin/bash -c "gem install chelsea; chelsea -f Gemfile.lock -t json | tail -n1 > chelsea-output.json" 
+  
 # SAST -------------------------------------------------------------------------------------------------------------------  
 trufflehog:
   stage: build
