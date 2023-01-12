@@ -1,2 +1,11 @@
 # PracticalDevSecOpsNotes
-Notes for DevSecOps Exam and report during exam.
+SAST has two parts: 
+Secret Scanning: 
+TruffleHog 
+
+Code Analysis: 
+Bandit 
+
+Best Practices: 
+
+Gospel: 
