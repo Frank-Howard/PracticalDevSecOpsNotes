@@ -171,6 +171,23 @@ gosec:
     when: always
   allow_failure: true
   
+# Need to add secrets to gitlab
+#  sonarqube:
+#    runs-on: ubuntu-20.04
+#    steps:
+#    - uses: actions/checkout@v2
+#      with:
+#        fetch-depth: 0
+#    - name: SonarQube Scan
+#      uses: sonarsource/sonarqube-scan-action@master
+#      env:
+#        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+#      with:
+#        projectBaseDir: .
+#       args: >
+#         -Dsonar.projectKey=Django
+  
 #DAST ------------------------------------------------------------------------------------------------------------------------------
 nikto:
   stage: integration
