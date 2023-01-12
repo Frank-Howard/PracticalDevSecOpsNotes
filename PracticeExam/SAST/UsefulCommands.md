@@ -14,7 +14,7 @@ curl --silent https://raw.githubusercontent.com/thoughtworks/talisman/master/glo
 curl --silent https://raw.githubusercontent.com/thoughtworks/talisman/master/global_install_scripts/install.bash > /tmp/install_talisman.bash && /bin/bash /tmp/install_talisman.bash pre-push 
 source ~/.bashrc 
 ^ Adds it to the bash environment so you can call talisman -h 
-talisman --scan\n 
+talisman --scan 
 
 #### SemGrep
 pip3 install semgrep==0.108.0
@@ -25,3 +25,11 @@ Scan all declarations of variables
 semgrep --lang python -e '$X = $Y' .
 Scan all function calls that have request as an argument 
 semgrep --lang python -e '$FUNC(request)' . 
+
+#### Hadolint
+wget https://github.com/hadolint/hadolint/releases/download/v1.18.0/hadolint-Linux-x86_64 
+mv hadolint-Linux-x86_64 hadolint 
+chmod +x hadolint 
+./hadolint --help 
+./hadolint Dockerfile 
+cat -n Dockerfile This shows line numbers
