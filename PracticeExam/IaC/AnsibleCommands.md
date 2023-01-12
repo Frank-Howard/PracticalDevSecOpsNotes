@@ -82,4 +82,21 @@ EOL
 Run playbook against inventory
 `ansible-playbook -i inventory.ini playbook.yml`
 
+Example role playbook
+```
+cat > /challenge/playbook.yml <<EOL
+---
+- name: Example playbook to install Terraform using ansible role.
+  hosts: prod
+  remote_user: root
+  become: yes
 
+  roles:
+    - secfigo.terraform
+EOL
+```
+Install a role
+`ansible galaxy install secfigo.terraform`
+
+Execute playbook against an inventory
+`ansible-playbook -i /challenge/inventory.ini /challenge/playbook.yml`
