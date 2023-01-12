@@ -121,6 +121,7 @@ auditjs:
 bundler-audit:
   stage: test
   script:
+    - docker pull hysnsec/bunder-audit
     - docker run --rm -v $(pwd):/src -w /src hysnsec/bundler-audit ossi -q -j | tee bundler-audit-output.json
   artifacts:
     paths: [bundler-audit-output.json]
@@ -128,17 +129,17 @@ bundler-audit:
     expire_in: one week
   allow_failure: true
   
-bundler-audit:
+# NOTE: Needs a Gemfile.lock file
+chelsea:
   stage: test
   script:
-    - docker run --rm -v $(pwd):/src -w /src hysnsec/bundler-audit ossi -q -j | tee bundler-audit-output.json
+    - docker pull ruby:2.6.6
+    - docker run -v $PWD:/app -w /app ruby:2.6.6 /bin/bash -c "gem install chelsea && chelsea -f Gemfile.lock -t json | tail -n1 > chelsea-output.json"
   artifacts:
-    paths: [bundler-audit-output.json]
+    paths: [chelsea-output.json]
     when: always # What is this for?
     expire_in: one week
-  allow_failure: true
-  
-  docker run -v $PWD:/app -w /app ruby:2.6.6 /bin/bash -c "gem install chelsea; chelsea -f Gemfile.lock -t json | tail -n1 > chelsea-output.json" 
+  allow_failure: true 
   
 # SAST -------------------------------------------------------------------------------------------------------------------  
 trufflehog:
@@ -160,6 +161,8 @@ sast:
     paths: [bandit-output.json]
     when: always
   allow_failure: true   #<--- allow the build to fail but don't mark it as such
+  
+
   
 #DAST ------------------------------------------------------------------------------------------------------------------------------
 nikto:
