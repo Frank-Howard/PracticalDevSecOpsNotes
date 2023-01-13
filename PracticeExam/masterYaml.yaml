@@ -265,3 +265,13 @@ inspec:
   artifacts:
     paths: [inspec-output.json]
     when: always
+    
+checkov:
+  stage: validate
+  script:
+    - docker pull bridgecrew/checkov
+    - docker run --rm -w /src -v $(pwd):/src bridgecrew/checkov -d aws -o json | tee checkov-output.json
+  artifacts:
+    paths: [checkov-output.json]
+    when: always
+  allow_failure: true
