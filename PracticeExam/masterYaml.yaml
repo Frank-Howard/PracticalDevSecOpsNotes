@@ -11,6 +11,10 @@ stages:
   - integration
   - prod
 
+# Useful keywords
+# only:
+#   - master # Only changes on master branch
+
 build:
   stage: build
   image: python:3.6
