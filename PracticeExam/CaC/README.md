@@ -12,28 +12,6 @@ inspec exec https://github.com/dev-sec/linux-baseline -t ssh://root@prod-xioqjd4
 -i is the ssh-key since login is via ssh
 --chef-license tells that we are accepting license, prevents asking YES/NO
 
-### Create custom Inspec Profile
-`mkdir inspec-profile && cd inspec-profile`
-
-Initialise an inspec profile
-`inspec init profile ubuntu --chef-licence accept`
-
-```
-cat >> ubuntu/controls/example.rb <<EOL
-describe file('/etc/shadow') do
-    it { should exist }
-    it { should be_file }
-    it { should be_owned_by 'root' }
-  end
-EOL
-```
-
-`inspec check ubuntu`
-`inspec exec ubuntu`
-
-Execute the profile on a remote server
-`inspec exec ubuntu -t ssh://root@prod-xioqjd4c -i ~/.ssh/id_rsa --chef-license accept`
-
 Example PCI/DSS checks
 ```
 cat > /inspec-profile/challenge/controls/example.rb <<EOL
