@@ -1,4 +1,4 @@
-### Create custom Inspec Profile
+### Inspec Shell
 `mkdir inspec-profile && cd inspec-profile`
 
 Initialise an inspec profile
