@@ -226,10 +226,17 @@ semgrep:
 # semgrep --lang python -e '$X = $Y' .
 # semgrep --lang python -e '$FUNC(request)' .
 
-semgrep-no-api:
+semgrep_no_api:
   stage: build
-# docker run --rm -v $PWD:/src -w /src returntocorp/semgrep semgrep  
- 
+  before_script:
+    - apt get -q install jq 
+  script:
+    - docker pull returntocorp/semgrep
+    - docker run --rm -v $PWD:/src -w /src returntocorp/semgrep semgrep --lang python -e "os.system(...)" . --json | jq > semgrep-output.json
+  artifacts:
+    paths: [semgrep-output.json]
+    when: always
+
   # Setup inline MR comments:
   # https://semgrep.dev/docs/semgrep-app/notifications/#enabling-gitlab-merge-request-comments
   
