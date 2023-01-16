@@ -306,5 +306,13 @@ terrascan_docker_version:
     paths: [terrascan-output.json]
     when: always
 
+tfsec:
+  stage: validate
+  script:
+    - docker run --rm -v $(pwd):/src aquasec/tfsec /src -f json > tfsec-output.json
+  artifacts:
+    paths: [tfsec-output.json]
+    when: always
+  allow_failure: true
 
   
