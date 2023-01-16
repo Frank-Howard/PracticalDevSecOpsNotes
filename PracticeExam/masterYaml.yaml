@@ -192,8 +192,6 @@ docker-hadolint:
         - "reports/*"
     paths:
       - "reports/*"
-
-
  
 # Needs vars, see https://semgrep.dev/for/gitlab
 semgrep:
