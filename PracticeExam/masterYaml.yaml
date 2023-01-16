@@ -300,7 +300,8 @@ terrascan_docker_version:
   stage: validate
   script: 
     - docker pull tenable/terrascan
-    - docker run --rm -it -v $(pwd):/iac -w /iac tenable/terrascan scan -o json | tee terrascan-output.json
+    # Can use | tee terrascan-output.json but it will clog up the feed. Better to use >
+    - docker run --rm -it -v $(pwd):/iac -w /iac tenable/terrascan scan -o json > terrascan-output.json
   artifacts:
     paths: [terrascan-output.json]
     when: always
