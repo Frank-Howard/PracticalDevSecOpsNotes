@@ -8,6 +8,7 @@ stages:
   - test
   - release
   - preprod
+  - validate
   - integration
   - prod
 
