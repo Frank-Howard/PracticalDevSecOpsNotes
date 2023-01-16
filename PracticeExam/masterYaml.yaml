@@ -276,9 +276,60 @@ sonarqube-check:
     - merge_requests
     - master # or the name of your main branch
     - develop
-    
-  
-  
+
+# need to clone webapp and cd into it for this example to work 
+# Change taskManager/* if in another repo or want to scan something else
+pylint:
+# docker run --rm -v $(pwd):/data -w /data cytopia/pylint --rcfile .pylintrc --output
+pylint:
+  stage: build
+  script:
+    - docker pull python:3.6
+    - docker run -it -v $(pwd):/pylint -w /pylint python:3.6-slim-bullseye /bin/sh -c "pip3 install pylint && pylint taskManager/*.py -f json | tee pylint-output.json"
+  artifacts:
+    paths: [pylint-output.json]
+    when: always
+    expire_in: one week # Optional
+
+pylint_in_image:
+  stage: build
+  image: python3.6
+  script:
+    - pip3 install pylint
+    - pylint taskManager/*.py -f json | tee pylint-output.json
+  artifacts:
+    paths: [pylint-output.json]
+    when: always
+    expire_in: one week # Optional
+
+#also requires webapp
+brakeman:
+  stage: test
+  image: node:alpine3.10
+  before_script:
+    - apt update
+    - apt install ruby-full -y
+    - gem install brakeman -v 5.2.1
+  script:
+    - brakeman -f json | tee brakeman-report.json
+  artifacts:
+    paths: [brakeman-report.json]
+    when: always
+    expire_in: one week # Optional
+
+retirejs:
+  stage: test
+  image: node:alpine3.10
+  script:
+    - npm install
+    - npm install -g retire
+    - retire --outputformat json --outputpath retirejs-report.json --severity high
+  artifacts:
+    paths: [retirejs-report.json]
+    when: always
+    expire_in: one week # Optional
+
+
 #DAST ------------------------------------------------------------------------------------------------------------------------------
 nikto:
   stage: integration
