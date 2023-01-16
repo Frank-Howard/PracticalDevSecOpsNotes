@@ -283,5 +283,27 @@ checkov:
     paths: [checkov-output.json]
     when: always
   allow_failure: true
+  
+terrascan:
+  stage: validate
+  image:
+    name: accurics/terrascan:latest
+    entrypoint: ["/bin/sh", "-c"]
+  script:
+    - /go/bin/terrascan scan . -o json > terrascan-output.json
+  artifacts:
+    paths: [terrascan-output.json]
+    when: always
+  allow_failure: true
+
+terrascan_docker_version:
+  stage: validate
+  script: 
+    - docker pull tenable/terrascan
+    - docker run --rm -it -v $(pwd):/iac -w /iac tenable/terrascan scan -o json | tee terrascan-output.json
+  artifacts:
+    paths: [terrascan-output.json]
+    when: always
+
 
   
