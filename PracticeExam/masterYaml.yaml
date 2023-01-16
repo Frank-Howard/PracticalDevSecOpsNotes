@@ -156,7 +156,7 @@ trufflehog:
     when: always  # What is this for?
     expire_in: one week
 
-sast:
+bandit:
   stage: build
   script:
     - docker pull hysnsec/bandit  # Download bandit docker container
@@ -175,8 +175,48 @@ gosec:
     paths: [gosec-output.json]
     when: always
   allow_failure: true
-  
 
+# see https://github.com/hadolint/hadolint/blob/master/docs/INTEGRATION.md
+docker-hadolint:
+  stage: build
+  image: hadolint/hadolint:latest-debian
+  script:
+    - mkdir -p reports
+    - hadolint -f gitlab_codeclimate Dockerfile > reports/hadolint-$(md5sum Dockerfile | cut -d" " -f1).json
+  artifacts:
+    name: "$CI_JOB_NAME artifacts from $CI_PROJECT_NAME on $CI_COMMIT_REF_SLUG"
+    expire_in: 1 day
+    when: always
+    reports:
+      codequality:
+        - "reports/*"
+    paths:
+      - "reports/*"
+
+
+ 
+# Needs vars, see https://semgrep.dev/for/gitlab
+semgrep:
+  stage: build
+  image: returntocorp/semgrep
+  script: semgrep ci
+  rules:
+  - changes:
+      - .gitlab-ci.yml
+  - if: $CI_PIPELINE_SOURCE == "web"  # allow triggering a scan manually from the gitlab UI
+  - if: $CI_MERGE_REQUEST_IID
+  
+  variables:
+    SEMGREP_RULES: >- # more at semgrep.dev/r
+      p/security-audit
+      p/secrets
+    SEMGREP_APP_TOKEN: $SEMGREP_APP_TOKEN
+  
+# Semgrep custom made
+# docker run --rm -v $PWD:/src -w /src returntocorp/semgrep semgrep login && semgrep ci 
+ 
+  # Setup inline MR comments:
+  # https://semgrep.dev/docs/semgrep-app/notifications/#enabling-gitlab-merge-request-comments
   
 # Need to add secrets to gitlab
 #  sonarqube:
