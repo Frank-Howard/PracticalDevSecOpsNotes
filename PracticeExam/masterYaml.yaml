@@ -176,6 +176,8 @@ gosec:
     when: always
   allow_failure: true
   
+
+  
 # Need to add secrets to gitlab
 #  sonarqube:
 #    runs-on: ubuntu-20.04
@@ -192,6 +194,28 @@ gosec:
 #        projectBaseDir: .
 #       args: >
 #         -Dsonar.projectKey=Django
+
+# Requires adding some vars, see https://docs.sonarqube.org/9.6/devops-platform-integration/gitlab-integration/#:~:text=SonarQube%27s%20integration%20with%20GitLab%20Self,SonarQube%20with%20your%20GitLab%20credentials.
+sonarqube-check:
+  image:
+    name: sonarsource/sonar-scanner-cli:latest
+    entrypoint: [""]
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script:
+    - sonar-scanner -Dsonar.qualitygate.wait=true
+  allow_failure: true
+  only:
+    - merge_requests
+    - master # or the name of your main branch
+    - develop
+    
+  
   
 #DAST ------------------------------------------------------------------------------------------------------------------------------
 nikto:
