@@ -176,6 +176,16 @@ gosec:
     when: always
   allow_failure: true
 
+njsscan:
+  stage: build
+  script:
+    - docker pull opensecurity/njsscan
+    - docker run -v $PWD:/njs -w /njs opensecurity/njsscan --json -o njsscan.json /njs
+  artifacts:
+    paths: [njsscan.json]
+    when: always
+  allow_failure: true 
+
 # see https://github.com/hadolint/hadolint/blob/master/docs/INTEGRATION.md
 docker-hadolint:
   stage: build
