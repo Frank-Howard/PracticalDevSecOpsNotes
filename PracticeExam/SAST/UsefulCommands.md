@@ -61,12 +61,26 @@ EOF
 pylint taskManager/*.py  
 
 #### Brakeman
-apt update
-apt install ruby-full -y
-gem install brakeman -v 5.2.1
-brakeman -h
-brakeman -f json | tee result.json
+`apt update`  
+`apt install ruby-full -y`  
+`gem install brakeman -v 5.2.1`  
+`brakeman -h`  
+`brakeman -f json | tee result.json`  
 create brakeman.ignore file if you want to ignore some tools
+
+```
+cat > brakeman.ignore <<EOF
+{
+    "ignored_warnings": [
+        {
+          "fingerprint": "febb21e45b226bb6bcdc23031091394a3ed80c76357f66b1f348844a7626f4df",
+          "note": "ignore XSS"
+        }
+    ]
+}
+EOF```
+`brakeman -f json -i brakeman.ignore | tee result.json`  
+
 
 #### SonarQube
 export SONAR_VERSION="4.7.0.2747"  
