@@ -237,6 +237,7 @@ zap-baseline:
   allow_failure: false  # Optional
 
 # IaC etc -----------------------------------------------------
+# 
 ansible-hardening:
   stage: prod
   image: willhallonline/ansible:2.9-ubuntu-18.04
@@ -251,7 +252,10 @@ ansible-hardening:
     - echo -e "[prod]\n$DEPLOYMENT_SERVER" >> inventory.ini
     - ansible-galaxy install dev-sec.os-hardening
     - ansible-playbook -i inventory.ini ansible-hardening.yml
-    
+  
+# Add DEPLOYMENT_SERVER (prod-ID) and DEPLOYMENT_SERVER_SSH_PRIVKEY to gitlab variable at
+# settings > CI/CD > Variables
+# Get Privkey ssh root@prod-xioqjd4c cat ~/.ssh/id_rsa
 inspec:
   stage: prod
   only:
@@ -279,5 +283,5 @@ checkov:
     paths: [checkov-output.json]
     when: always
   allow_failure: true
-  
+
   
