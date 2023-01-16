@@ -3,6 +3,8 @@ SAST has two parts:
 Secret Scanning: 
 TruffleHog 
 
+Git Hook is run locally just before a git event like commit or push. Not good because cannot be automated on CI and admins can remove them.
+
 Code Analysis: 
 Bandit 
 
