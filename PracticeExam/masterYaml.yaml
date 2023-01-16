@@ -279,7 +279,6 @@ sonarqube-check:
 
 # need to clone webapp and cd into it for this example to work 
 # Change taskManager/* if in another repo or want to scan something else
-pylint:
 # docker run --rm -v $(pwd):/data -w /data cytopia/pylint --rcfile .pylintrc --output
 pylint:
   stage: build
@@ -302,7 +301,7 @@ pylint_in_image:
     when: always
     expire_in: one week # Optional
 
-#also requires webapp
+# also requires webapp 
 brakeman:
   stage: test
   image: node:alpine3.10
@@ -316,6 +315,13 @@ brakeman:
     paths: [brakeman-report.json]
     when: always
     expire_in: one week # Optional
+
+dastardly:
+  stage: test
+  image: node:alpine3.10
+  script: 
+    - docker pull public.ecr.aws/portswigger/dastardly
+    - docker run --user $(id -u) --rm \ -v $(pwd):/dastardly \ -e DASTARDLY_TARGET_URL=https://prod-xioqjd4c.lab.practical-devsecops.training \ -e DASTARDLY_OUTPUT_FILE=/dastardly/dastardly-report.xml \ public.ecr.aws/portswigger/dastardly
 
 retirejs:
   stage: test
