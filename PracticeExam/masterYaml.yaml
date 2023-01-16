@@ -322,19 +322,9 @@ dastardly:
   script: 
     - docker pull public.ecr.aws/portswigger/dastardly
     - docker run --user $(id -u) --rm \ -v $(pwd):/dastardly \ -e DASTARDLY_TARGET_URL=https://prod-xioqjd4c.lab.practical-devsecops.training \ -e DASTARDLY_OUTPUT_FILE=/dastardly/dastardly-report.xml \ public.ecr.aws/portswigger/dastardly
-
-retirejs:
-  stage: test
-  image: node:alpine3.10
-  script:
-    - npm install
-    - npm install -g retire
-    - retire --outputformat json --outputpath retirejs-report.json --severity high
   artifacts:
-    paths: [retirejs-report.json]
+    paths: [/dastardly/dastardly-report.xml]
     when: always
-    expire_in: one week # Optional
-
 
 #DAST ------------------------------------------------------------------------------------------------------------------------------
 nikto:
