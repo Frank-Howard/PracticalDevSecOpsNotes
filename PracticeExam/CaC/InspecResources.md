@@ -41,3 +41,9 @@ end
 EOL
 ```
 Can execute remotely the same way.
+
+#### Service Resource
+Tests whether an installation of a named service is successful and enabled
+
+#### Command Resource 
+Test an arbitrary command that is run on the system. Can read output etc
