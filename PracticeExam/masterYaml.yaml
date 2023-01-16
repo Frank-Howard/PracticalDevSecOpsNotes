@@ -210,8 +210,15 @@ semgrep:
       p/secrets
     SEMGREP_APP_TOKEN: $SEMGREP_APP_TOKEN
   
-# Semgrep custom made
-# docker run --rm -v $PWD:/src -w /src returntocorp/semgrep semgrep login && semgrep ci 
+# Semgrep useful commands: 
+# semgrep --lang python -e "os.system(...)" . --json | jq
+# semgrep --lang python -e "DEBUG =True" --include settings.py .
+# semgrep --lang python -e '$X = $Y' .
+# semgrep --lang python -e '$FUNC(request)' .
+
+semgrep-no-api:
+  stage: build
+# docker run --rm -v $PWD:/src -w /src returntocorp/semgrep semgrep  
  
   # Setup inline MR comments:
   # https://semgrep.dev/docs/semgrep-app/notifications/#enabling-gitlab-merge-request-comments
