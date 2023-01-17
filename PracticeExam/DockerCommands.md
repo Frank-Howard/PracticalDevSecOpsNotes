@@ -101,7 +101,9 @@ EOL
 ```
 Entrypoint always runs first but can be overridden.
 
-#### 
+#### noexec etc
+`docker run -d --tmpfs /run:rw,noexec,nosuid,size=65536k my_image`
+tmpfd options are
 
 #### Network types
 ##### bridge
