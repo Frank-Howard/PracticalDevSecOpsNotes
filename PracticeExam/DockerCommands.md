@@ -103,7 +103,24 @@ Entrypoint always runs first but can be overridden.
 
 #### noexec etc
 `docker run -d --tmpfs /run:rw,noexec,nosuid,size=65536k my_image`
-tmpfd options are
+volume mounting options
+rw - read write mode  
+noexec - No execution 
+nosuid - Cannot contain set uid files. i.e files that allow file to be executed with the permissions of another user  
+
+#### Create a snapshot in docker
+First run the container 
+`docker run -d --name ubuntu -i ubuntu:18.04`  
+`docker exec -it ubuntu bash`  
+`apt update && apt install -y nginx`  
+`docker save ubuntu > ubuntu-save.tar`  
+`docker export ubuntu > ubuntu-export.tar`  
+save only saves image layers, history and deleted/overridden files. export also saves the current state of the container even after we executed the command like apt update and also installed the package 
+
+Import snapshot and run it 
+`docker load -i ubuntu-save.tar`
+`docker import ubuntu-export.tar ubuntu-export` 
+DOESN'T SAVE THE VOLUME, NEED TO SAVE SEPERATELY
 
 #### Network types
 ##### bridge
