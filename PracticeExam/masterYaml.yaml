@@ -454,4 +454,18 @@ tfsec:
     when: always
   allow_failure: true
 
-  
+# Vuln Management ------------------------------------------------
+# REQUIRES THE UPLOAD SCRIPT BE ADDED TO THE GITLAB FIRST.
+# REQUIRES DOJO_HOST AND DOJO_API_TOKEN variables added
+sast:
+  stage: build
+  before_script:
+    - apk add py-pip py-requests
+  script:
+    - docker pull hysnsec/bandit  # Download bandit docker container
+    - docker run --user $(id -u):$(id -g) -v $(pwd):/src --rm hysnsec/bandit -r /src -f json -o /src/bandit-output.json
+  after_script:
+    - python3 upload-results.py --host $DOJO_HOST --api_key $DOJO_API_TOKEN --engagement_id 1 --product_id 1 --lead_id 1 --environment "Production" --result_file bandit-output.json --scanner "Bandit Scan"
+  artifacts:
+    paths: [bandit-output.json]
+    when: always
