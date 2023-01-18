@@ -11,3 +11,5 @@ d for delete
 u for undo
 
 double dd press = line deleted
+
+Esc -> : -> set number
