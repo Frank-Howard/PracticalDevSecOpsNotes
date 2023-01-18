@@ -41,7 +41,14 @@ rules:
 EOF
 ```
 Following fields are required for a rule
-
+id (string)	Unique, descriptive identifier, e.g., possible-command-injection  
+message (string)	Message highlighting why this rule fired and how to remediate the issue, e.g. Command injection attack  
+severity (string)	One of: WARNING, ERROR  
+languages (array)	Any of: go, java, javascript, python, typescript  
+pattern (string)	Find code matching this expression  
+patterns (array)	Logical AND of multiple patterns  
+pattern-either (array)	Logical OR of multiple patterns  
+pattern-regex (string)	Search files for Python re compatible expressions  
 
 
 pattern-inside example. Keeps findings that lie in the pattern.
