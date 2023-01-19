@@ -469,3 +469,19 @@ sast:
   artifacts:
     paths: [bandit-output.json]
     when: always
+
+# Conditional fail example
+secrets-scanning:
+  stage: build
+  before_script:
+    - apk add jq
+  script:
+    - docker pull hysnsec/detect-secrets
+    - docker run --user $(id -u):$(id -g) -v $(pwd):/src --rm -w /src hysnsec/detect-secrets scan | tee secrets-output.json
+    - cat secrets-output.json | jq .results | jq length
+    - len=$(jq '.results | length' secrets-output.json)
+    - if [ $len -gt 0 ]; then exit 1; fi
+  artifacts:
+    paths: [secrets-output.json]
+    when: always
+  allow_failure: false 
