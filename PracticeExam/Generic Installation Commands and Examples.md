@@ -108,6 +108,7 @@ findsecbugs.sh -h
 ##### njsscan NOT FINISHED
 ```
 pip3 install njsscan==0.3.3
+pip3 install --upgrade urllib3
 njsscan --json -o output.json .
 
 ```
