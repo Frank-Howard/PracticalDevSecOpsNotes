@@ -38,8 +38,20 @@ length returns length of input
 jq '.[] | {name: .details.name, servicecount: .services | length}' learnjq.json
 ```
 
-select based on a condition
+select based on a condition  
 
 ```
 jq '.[] | select(.details.name=="AWS")' learnjq.json
+```
+
+Access something within a file  
+
+```
+jq ".[0].summary.failed" /terraform/scan-result.json
+```
+
+Access a key with a . in it
+
+```
+cat example.json | jq .example.'"thing.with.dot"'
 ```
